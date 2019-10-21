@@ -65,7 +65,7 @@ def cal(args):# Check conditions of phi
         delta_list2.append(tmp_delta)
         chi_list2.append(min_chi)
         
-    my_plot(chi_list2,delta_list2,eta)# create the figure
+    #my_plot(chi_list2,delta_list2,eta)# create the figure
     write_csv(chi_list2,delta_list2,args)
 
 def write_csv(x,y,args):
