@@ -1,1 +1,2 @@
-python3 hao_fig4_discount.py --p0 10 --delta 10 --chi 10 --w 0.8 --eta 0.14
+#!/bin/sh
+python3 start_up.py|xargs -L 1 -P 2 python3 hao_fig4_discount.py
