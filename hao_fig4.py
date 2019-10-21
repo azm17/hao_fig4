@@ -70,7 +70,7 @@ def cal(args):# Check conditions of phi
 
 def write_csv(x,y,args):
     with open('./data/csv/nondiscount/eta_{}.csv'
-              .format(str(args.eta).replace('.', '')), 'w') as f:
+              .format('{:.4f}'.format(args.eta).replace('.', '')), 'w') as f:
         
         writer = csv.writer(f, lineterminator='\n')
         writer.writerows([x,y])
@@ -96,7 +96,7 @@ if __name__ == "__main__":
     
     dt_now = datetime.datetime.now()
     print("time: {}".format(dt_now))
-    print("Calculating in the case of eta={} ...".format(args.eta))
+    print("Calculating in the case of eta={:.4f} ...".format(args.eta))
     cal(args)
     
     print("----")
