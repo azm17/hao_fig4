@@ -14,7 +14,7 @@ import datetime
 from argparse import ArgumentParser
 
 
-# parameter setting (default)
+#--parameter setting (default)--
 default_settings={'p0':100,# step size of p0 ,0<=p0<=1
                   'delta':100,# step size of delta ,0<=delta<=R-P
                   'chi':100,# step size of chi ,0<=chi<=25
@@ -22,6 +22,7 @@ default_settings={'p0':100,# step size of p0 ,0<=p0<=1
                   'eta':0.10}# error rate eta=epsilon+xi
 
 payoff={'T':1.5, 'R':1.0, 'P':0.0, 'S':-0.5}
+#---
 
 """
 core i9-9900K (8 core 16 thread)
@@ -154,6 +155,4 @@ if __name__ == "__main__":
     print('ending time: {}'.format(dt_end))
     print('<Calculating time: {}>'.format(dt_end-dt_start))
     print('--------')
-    
-    
     
