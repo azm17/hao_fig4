@@ -3,26 +3,60 @@
 Created on Fri Oct 18 15:55:40 2019
 
 @author: azumi
+
+details: extended fig4 of hao et al PRE(2015) to discounted
 """
 
 import numpy as np
 import matplotlib.pyplot as plt
+import csv
 import datetime
+from argparse import ArgumentParser
 
 
-p0_list=[i for i in np.linspace(0,1,100)]
-#w_list=[i for i in np.linspace(1,0.3,100)]
-#kappa_list=[i for i in np.linspace(R,P,20)]
+# parameter setting (default)
+default_settings={'p0':100,# step size of p0 ,0<=p0<=1
+                  'delta':100,# step size of delta ,0<=delta<=R-P
+                  'chi':100,# step size of chi ,0<=chi<=25
+                  'w':0.8,# discount factor, must satisfy the condition 0<w<1
+                  'eta':0.10}# error rate eta=epsilon+xi
 
+payoff={'T':1.5, 'R':1.0, 'P':0.0, 'S':-0.5}
 
-def cal(epsilon,xi,delta,chi,w,p0):# calculate phi
-    RE = R*(1-epsilon-xi)+S*(epsilon+xi)
-    SE = S*(1-epsilon-xi)+R*(epsilon+xi)
-    TE = T*(1-epsilon-xi)+P*(epsilon+xi)
-    PE = P*(1-epsilon-xi)+T*(epsilon+xi)
+"""
+core i9-9900K (8 core 16 thread)
+RAM32.0GB Windows 10 Pro
+
+(delta,chi,p0)=(100,100,100)       13 seconds
+(delta,chi,p0)=(100,1000,100)     120 seconds
+(delta,chi,p0)=(1000,10000,100)  1046 seconds
+(delta,chi,p0)=(1000,10000,1000)    3 hours?
+"""
+
+def parse_args():
+    parser = ArgumentParser()
+    parser.add_argument('--p0', metavar='p0_StepSize', type=float, 
+                        default=default_settings['p0'])
+    parser.add_argument('--delta', metavar='delta_StepSize', type=float,
+                        default=default_settings['delta'])
+    parser.add_argument('--chi', metavar='chi_StepSize', type=float,
+                        default=default_settings['chi'])
+    parser.add_argument('--w', metavar='discount_rate', type=float,
+                        default=default_settings['w'])
+    parser.add_argument('--eta', metavar='error_rate_eta', type=float,
+                        default=default_settings['eta'])
     
-    eta=epsilon+xi
-    mu=1-epsilon-xi
+    args = parser.parse_args()
+    return args
+
+def cal(eta,delta,chi,w,p0):# calculate phi
+    # expected payoff against actions
+    RE = R*(1-eta)+S*eta
+    SE = S*(1-eta)+R*eta
+    TE = T*(1-eta)+P*eta
+    PE = P*(1-eta)+T*eta
+    # error rate mu=1-epsilon-xi
+    mu=1-eta
     
     phi_1=(1-(1-w)*p0)/((chi-1)*(RE-PE-delta)-eta/(mu-eta)*((RE-SE)+chi*(TE-RE)))
     phi_2=(1-(1-w)*p0)/((chi-1)*(RE-PE-delta)+mu/(mu-eta)*((RE-SE)+chi*(TE-RE)))
@@ -36,25 +70,27 @@ def cal(epsilon,xi,delta,chi,w,p0):# calculate phi
     
     return phi_1,phi_2,phi_3,phi_4,phi_5,phi_6,phi_7,phi_8
 
-def cal2(epsilon,xi,w):# Check conditions of phi
-    #chi_list=[i for i in np.linspace(1,21,100)]#100
-    chi_list=[i for i in np.linspace(1,21,1000)]#1000
-    #delta_list=[i for i in np.linspace(0,1,1000)]#10000
-    delta_list=[i for i in np.linspace(0,1,1000)]#1000
-    p0_list=[i for i in np.linspace(0,1,1000)]#1000 100*100*100　4min
-    #p0_list=[0.5]
-    delta_list2=[]
-    chi_list2=[]
-    p0_list2=[]
+def cal2(args):# Check conditions of phi
+    chi_list=[i for i in np.linspace(1,25,args.chi)]
+    delta_list=[i for i in np.linspace(0,1,args.delta)]
+    p0_list=[i for i in np.linspace(0,1,args.p0)]
+    eta=args.eta
+    
+    delta_list2=[]# for result
+    chi_list2=[]# for result
+    p0_list2=[]# for result
     
     for delta in delta_list:
-        min_chi=100
-        tmp_delta=100
-        tmp_p0=100
+        progress=round(delta/delta_list[-1]*100)
+        if int(progress)%20==0:
+            print('{}%'.format(int(progress)))
+        min_chi=100# temporary value
+        tmp_delta=100# temporary value
+        tmp_p0=100# temporary value
         for p0 in p0_list:
             for chi in chi_list:
-                phi_1,phi_2,phi_3,phi_4,phi_5,phi_6,phi_7,phi_8=cal(epsilon,xi,delta,chi,w,p0)
-                
+                # Check conditions of phi
+                phi_1,phi_2,phi_3,phi_4,phi_5,phi_6,phi_7,phi_8=cal(eta,delta,chi,args.w,p0)
                 if phi_1>=phi_5 and phi_1>=phi_6 and phi_1>=phi_7 and phi_1>=phi_8:
                     if phi_2>=phi_5 and phi_2>=phi_6 and phi_2>=phi_7 and phi_2>=phi_8:
                         if phi_3>=phi_5 and phi_3>=phi_6 and phi_3>=phi_7 and phi_3>=phi_8:
@@ -66,14 +102,24 @@ def cal2(epsilon,xi,w):# Check conditions of phi
         
         if tmp_p0==100 or min_chi==100 or tmp_delta==100:
             continue
+        else:
+            delta_list2.append(tmp_delta)
+            chi_list2.append(min_chi)
+            p0_list2.append(tmp_p0)
         
-        delta_list2.append(tmp_delta)
-        chi_list2.append(min_chi)
-        p0_list2.append(tmp_p0)
-    
-    eta=epsilon+xi
-    my_plot(chi_list2,delta_list2,eta,w)
+    write_csv(chi_list2,delta_list2,args)# output data
+    #my_plot(chi_list2,delta_list2,eta,args.w)# output figure
 
+# output csv data 
+def write_csv(x,y,args):
+    with open('./data/csv/eta_{}_w_{}.csv'
+              .format(str(args.eta).replace('.', ''),
+              str(args.w).replace('.', '')), 'w') as f:
+        
+        writer = csv.writer(f, lineterminator='\n')
+        writer.writerows([x,y])
+
+# output figure
 def my_plot(x,y,eta,w):# generate the figure and setting of the figure
     plt.figure()
     plt.ylim(0,)
@@ -83,26 +129,31 @@ def my_plot(x,y,eta,w):# generate the figure and setting of the figure
     plt.grid()
     plt.plot(x,y)
     
-    plt.savefig('./figure/2/eta_{}_w_{}_noerror.png'.format(eta,w))
+    plt.savefig('./data/figure/eta_{}_w_{}.png'
+                .format(str(eta).replace('.', ''),
+                        str(w).replace('.', '')))
 
 if __name__ == "__main__":
-    T,R,P,S=1.5,1,0,-0.5
+    args = parse_args()# Parsing
+    print('--------')
+    print('Settings')
+    print(' Payoff: (T,R,P,S)=({},{},{},{})'
+          .format(payoff['T'],payoff['R'],payoff['P'],payoff['S']))
+    print(' Probability: (w,eta)=({},{})'
+          .format(args.w,args.eta))
+    print(' Step_size: (delta,chi,p0)=({},{},{})'
+          .format(args.delta,args.chi,args.p0))
+    
     dt_start = datetime.datetime.now()
-    print("start time: {}".format(dt_start))
-    print("----")
-    eta_list=[0.03*2,0.05*2,0.07*2]
-    #eta_list=[0.07*2]
-    w_list=[0.95,0.9,0.85,0.8,0.75,0.7]
+    print('start time: {}'.format(dt_start))
     
-    for w in w_list:
-        for eta in eta_list:
-            dt_now = datetime.datetime.now()
-            print("time: {}".format(dt_now))
-            print("Calculating in the case of (eta,w)=({},{}) ...".format(eta,w))
-            i=eta/2
-            cal2(i,i,w)
+    T,R,P,S=payoff['T'],payoff['R'],payoff['P'],payoff['S']
+    cal2(args)# main process
     
-    print("----")
     dt_end = datetime.datetime.now()
-    print("ending time: {}".format(dt_end))
-    print("Calculating time: {}".format(dt_end-dt_start))
+    print('ending time: {}'.format(dt_end))
+    print('<Calculating time: {}>'.format(dt_end-dt_start))
+    print('--------')
+    
+    
+    
