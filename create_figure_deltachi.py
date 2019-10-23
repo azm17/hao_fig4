@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import csv
 import os
 
-def my_plot(x,y,filename):# generate the figure and setting of the figure
+def my_plot(x,y,filename,n):# generate the figure and setting of the figure
     plt.figure()
     plt.ylim(0,)
     plt.xlim(0,20)
@@ -16,8 +16,8 @@ def my_plot(x,y,filename):# generate the figure and setting of the figure
     plt.ylabel('$\Delta$')
     plt.grid()
     plt.plot(x,y)
-    
-    plt.savefig('./data/figure/nodiscount/{}.png'.format(filename))
+    plt.savefig('../data/figure/nondiscount_hao/{}.png'.format(filename))
+    #plt.savefig('../data/figure/nondiscount_hao/{}.png'.format(n))
 
 def read_csv(filename):
     data=[]
@@ -31,10 +31,11 @@ def read_csv(filename):
 
 if __name__ == "__main__":
     
-    filedir='./data/csv/nondiscount/'
-    
+    filedir='../data/csv/nondiscount_hao/'
+    n=0
     for filename in os.listdir(filedir):
+        n+=1
         name=filename[0:-4]
         x,y=read_csv(filedir+name)
-        my_plot(x,y,name)
+        my_plot(x,y,name,n)
     
