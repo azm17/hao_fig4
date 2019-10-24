@@ -17,7 +17,7 @@ default_settings={'delta':1000,# step size of delta ,0<=delta<=R-P
                   'chi':1000,# step size of chi ,0<=chi<=25
                   'eta':0.03}# error rate eta=epsilon+xi
 
-payoff={'T':1.5, 'R':1.0, 'P':0.0, 'S':-0.5}
+payoff={'T':2.0, 'R':1.0, 'P':0.0, 'S':-0.5}
 
 def parse_args():
     parser = ArgumentParser()
