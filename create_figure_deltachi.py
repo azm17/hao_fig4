@@ -16,7 +16,7 @@ def my_plot(x,y,filename,n):# generate the figure and setting of the figure
     plt.ylabel('$\Delta$')
     plt.grid()
     plt.plot(x,y)
-    plt.savefig('../data/figure/nondiscount_hao/{}.png'.format(filename))
+    plt.savefig('../data/figure/nondiscount_workstation/{}.png'.format(filename))
     #plt.savefig('../data/figure/nondiscount_hao/{}.png'.format(n))
 
 def read_csv(filename):
@@ -31,7 +31,7 @@ def read_csv(filename):
 
 if __name__ == "__main__":
     
-    filedir='../data/csv/nondiscount_hao/'
+    filedir='../data/csv/nondiscount_workstation/'
     n=0
     for filename in os.listdir(filedir):
         n+=1
