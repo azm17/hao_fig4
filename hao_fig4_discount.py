@@ -113,7 +113,7 @@ def cal2(args):# Check conditions of phi
 
 # output csv data 
 def write_csv(x,y,args):
-    with open('./data/csv/discount/eta_{}_w_{}.csv'
+    with open('./data/csv/discount1025/eta_{}_w_{}.csv'
               .format(str(args.eta).replace('.', ''),
               str(args.w).replace('.', '')), 'w') as f:
         
