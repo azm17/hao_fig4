@@ -8,13 +8,13 @@ details: extended fig4 of hao et al PRE(2015) to discounted
 """
 
 import numpy as np
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import csv
 import datetime
 from argparse import ArgumentParser
 
 
-#--parameter setting (default)--
+# --parameter setting (default)--
 default_settings={'p0':100,# step size of p0 ,0<=p0<=1
                   'delta':100,# step size of delta ,0<=delta<=R-P
                   'chi':100,# step size of chi ,0<=chi<=25
@@ -22,7 +22,8 @@ default_settings={'p0':100,# step size of p0 ,0<=p0<=1
                   'eta':0.10}# error rate eta=epsilon+xi
 
 payoff={'T':1.5, 'R':1.0, 'P':0.0, 'S':-0.5}
-#---
+
+# --- ---
 
 """
 core i9-9900K (8 core 16 thread)
@@ -36,15 +37,24 @@ RAM32.0GB Windows 10 Pro
 
 def parse_args():
     parser = ArgumentParser()
-    parser.add_argument('--p0', metavar='p0_StepSize', type=float, 
+    parser.add_argument('--p0', metavar='p0_StepSize',
+                        type=float, 
                         default=default_settings['p0'])
-    parser.add_argument('--delta', metavar='delta_StepSize', type=float,
+    
+    parser.add_argument('--delta', metavar='delta_StepSize',
+                        type=float,
                         default=default_settings['delta'])
-    parser.add_argument('--chi', metavar='chi_StepSize', type=float,
+    
+    parser.add_argument('--chi', metavar='chi_StepSize',
+                        type=float,
                         default=default_settings['chi'])
-    parser.add_argument('--w', metavar='discount_rate', type=float,
+    
+    parser.add_argument('--w', metavar='discount_rate',
+                        type=float,
                         default=default_settings['w'])
-    parser.add_argument('--eta', metavar='error_rate_eta', type=float,
+    
+    parser.add_argument('--eta', metavar='error_rate_eta',
+                        type=float,
                         default=default_settings['eta'])
     
     args = parser.parse_args()
@@ -71,18 +81,18 @@ def cal(eta,delta,chi,w,p0):# calculate phi
     
     return phi_1,phi_2,phi_3,phi_4,phi_5,phi_6,phi_7,phi_8
 
-def cal2(args):# Check conditions of phi
-    chi_list=[i for i in np.linspace(1,25,args.chi)]
-    delta_list=[i for i in np.linspace(0,1,args.delta)]
-    p0_list=[i for i in np.linspace(0,1,args.p0)]
-    eta=args.eta
+def cal2(args):# Check the conditions of phi
+    chi_list=[i for i in np.linspace(1,25,args.chi)]# the list of chi
+    delta_list=[i for i in np.linspace(0,1,args.delta)]# the list of delta
+    p0_list=[i for i in np.linspace(0,1,args.p0)]# the list of p_0
+    eta=args.eta# error rate of eta
     
     delta_list2=[]# for result
     chi_list2=[]# for result
     p0_list2=[]# for result
     
     for delta in delta_list:
-        progress=round(delta/delta_list[-1]*100)
+        progress=round(delta/delta_list[-1]*100)# for checking progress rate(%)
         if int(progress)%20==0:
             print('{}%'.format(int(progress)))
         min_chi=100# temporary value
@@ -90,8 +100,9 @@ def cal2(args):# Check conditions of phi
         tmp_p0=100# temporary value
         for p0 in p0_list:
             for chi in chi_list:
-                # Check conditions of phi
+                # Check the conditions of phi
                 phi_1,phi_2,phi_3,phi_4,phi_5,phi_6,phi_7,phi_8=cal(eta,delta,chi,args.w,p0)
+                
                 if phi_1>=phi_5 and phi_1>=phi_6 and phi_1>=phi_7 and phi_1>=phi_8:
                     if phi_2>=phi_5 and phi_2>=phi_6 and phi_2>=phi_7 and phi_2>=phi_8:
                         if phi_3>=phi_5 and phi_3>=phi_6 and phi_3>=phi_7 and phi_3>=phi_8:
@@ -101,8 +112,10 @@ def cal2(args):# Check conditions of phi
                                     tmp_delta=delta
                                     tmp_p0=p0
         
+        # Valid value of chi do not exist if any value equals 100.
         if tmp_p0==100 or min_chi==100 or tmp_delta==100:
             continue
+        # add result if valid value exist.
         else:
             delta_list2.append(tmp_delta)
             chi_list2.append(min_chi)
@@ -119,7 +132,7 @@ def write_csv(x,y,args):
         
         writer = csv.writer(f, lineterminator='\n')
         writer.writerows([x,y])
-
+"""
 # output figure
 def my_plot(x,y,eta,w):# generate the figure and setting of the figure
     plt.figure()
@@ -133,9 +146,10 @@ def my_plot(x,y,eta,w):# generate the figure and setting of the figure
     plt.savefig('./data/figure/eta_{}_w_{}.png'
                 .format(str(eta).replace('.', ''),
                         str(w).replace('.', '')))
-
+"""
 if __name__ == "__main__":
     args = parse_args()# Parsing
+    
     print('--------')
     print('Settings')
     print(' Payoff: (T,R,P,S)=({},{},{},{})'
@@ -149,6 +163,7 @@ if __name__ == "__main__":
     print('start time: {}'.format(dt_start))
     
     T,R,P,S=payoff['T'],payoff['R'],payoff['P'],payoff['S']
+    
     cal2(args)# main process
     
     dt_end = datetime.datetime.now()
