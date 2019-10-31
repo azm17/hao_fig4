@@ -18,8 +18,8 @@ from argparse import ArgumentParser
 default_settings={'p0':100,# step size of p0 ,0<=p0<=1
                   'delta':100,# step size of delta ,0<=delta<=R-P
                   'chi':100,# step size of chi ,0<=chi<=25
-                  'w':0.8,# discount factor, must satisfy the condition 0<w<1
-                  'eta':0.10}# error rate eta=epsilon+xi
+                  'w':0.9,# discount factor, must satisfy the condition 0<w<1
+                  'eta':0.111}# error rate eta=epsilon+xi
 
 payoff={'T':1.5, 'R':1.0, 'P':0.0, 'S':-0.5}
 
@@ -126,9 +126,9 @@ def cal2(args):# Check the conditions of phi
 
 # output csv data 
 def write_csv(x,y,args):
-    with open('./data/csv/discount1025/eta_{}_w_{}.csv'
-              .format(str(args.eta).replace('.', ''),
-              str(args.w).replace('.', '')), 'w') as f:
+    with open('./data/csv/discount1031/eta_{}_w_{}.csv'
+              .format('{:.3f}'.format(args.eta).replace('.', ''),
+              '{:.2f}'.format(args.w).replace('.', '')), 'w') as f:
         
         writer = csv.writer(f, lineterminator='\n')
         writer.writerows([x,y])
