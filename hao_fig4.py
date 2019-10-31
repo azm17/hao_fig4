@@ -17,7 +17,7 @@ default_settings={'delta':1000,# step size of delta ,0<=delta<=R-P
                   'chi':1000,# step size of chi ,0<=chi<=25
                   'eta':0.03}# error rate eta=epsilon+xi
 
-payoff={'T':2.0, 'R':1.0, 'P':0.0, 'S':-0.5}
+payoff={'T':1.5, 'R':1.0, 'P':0.0, 'S':-0.5}
 
 def parse_args():
     parser = ArgumentParser()
@@ -70,7 +70,7 @@ def cal(args):# Check conditions of phi
 
 def write_csv(x,y,args):
     with open('./data/csv/nondiscount3/eta_{}_w_10.csv'
-              .format('{:.3f}'.format(args.eta).replace('.', '')), 'w') as f:
+              .format('{:.2f}'.format(args.eta).replace('.', '')), 'w') as f:
         
         writer = csv.writer(f, lineterminator='\n')
         writer.writerows([x,y])
