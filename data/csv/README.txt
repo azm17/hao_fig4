@@ -22,3 +22,7 @@ TRPS={1.5,1,0,-0.5}
 
 dir: marged_csv
 csvファイルをすべて合わせたもの
+
+dir: nondiscount3
+w=1
+TRPS={1.5,1,0,-0.5},marged_wに追加用
