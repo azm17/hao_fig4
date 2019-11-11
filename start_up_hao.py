@@ -2,8 +2,8 @@
 chi=1000
 delta=1000
 import numpy as np
-
-eta_list=[round(i,4) for i in np.arange(0.01, 0.31, 0.0001)]
+step=0.01
+eta_list=[round(i,4) for i in np.arange(step, 0.25, step)]
 
 for eta in eta_list:
 	print('--delta {} --chi {} --eta {}'.format(delta,chi,eta))

@@ -18,7 +18,7 @@ def my_plot(x,y,filename,n):# generate the figure and setting of the figure
     plt.plot(x,y)
     print(round(int(filename[4:])*0.0001,3))
     plt.title('$\epsilon+\\xi$={:.3}'.format(round(int(filename[4:])*0.0001,3)))
-    plt.savefig('../data/figure/nondiscount1/{}.png'.format(n))
+    #plt.savefig('../data/figure/nondiscount1/{}.png'.format(n))
     #plt.savefig('../data/figure/nondiscount_hao/{}.png'.format(n))
 
 def read_csv(filename):
