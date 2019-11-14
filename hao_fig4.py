@@ -70,7 +70,7 @@ def cal(args):# Check conditions of phi
 
 def write_csv(x,y,args):
     with open('./data/csv/nodiscount1114/eta_{}_w_10.csv'
-              .format('{:.2f}'.format(args.eta).replace('.', '')), 'w') as f:
+              .format('{:.3f}'.format(args.eta).replace('.', '')), 'w') as f:
         
         writer = csv.writer(f, lineterminator='\n')
         writer.writerows([x,y])

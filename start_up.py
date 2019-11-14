@@ -12,11 +12,11 @@ import numpy as np
 #w_list2=[i-0.025 for i in w_list1]# azumi_ubuntu
 
 #w_list=set(w_l)-set(w_list1)
-w_list=[0.9]
+w_list=[0.5]
 #print(w_list)
 #eta_list=[0.06,0.10,0.14,0.18,0.22,0.26]
 step=0.001
-eta_list=[round(i,3) for i in np.arange(step,0.25+step,step)]
+eta_list=[round(i,3) for i in np.arange(0.027,0.25+step,step)]
 
 for w in w_list:
 	for eta in eta_list:
