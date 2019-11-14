@@ -69,7 +69,7 @@ def cal(args):# Check conditions of phi
     write_csv(chi_list2,delta_list2,args)
 
 def write_csv(x,y,args):
-    with open('./data/csv/nondiscount3/eta_{}_w_10.csv'
+    with open('./data/csv/nodiscount1114/eta_{}_w_10.csv'
               .format('{:.2f}'.format(args.eta).replace('.', '')), 'w') as f:
         
         writer = csv.writer(f, lineterminator='\n')

@@ -31,7 +31,7 @@ def my_listplot(x_list,y_list,legend_list):
     plt.grid()
     
     for x,y in zip(x_list,y_list):
-        plt.plot(x,y,'o')
+        plt.plot(x,y,'-',markersize=5)
     plt.legend(legend_list)
     plt.show()
     #plt.savefig('../data/figure/chic.png')
@@ -50,22 +50,24 @@ def read_csv(filename):
         return min(x)
 
 if __name__ == "__main__":
-    relative_path='./data/csv/marged_w/'
+    #relative_path='./data/csv/marged_w/'
+    relative_path='./data/csv/discount1031/'
     dir_list=os.listdir(relative_path)
     dir_list.reverse()# reverse dir_list
     x_list,y_list,w_list=[],[],[]
     
     for tmp_dir in dir_list:
-        w_list.append(round(float(tmp_dir[2:])*0.1,1))
+        w_list.append(round(float(tmp_dir[1:])*0.1,1))
+    print(w_list)
     
     for filedir in dir_list:
         filedir =relative_path+filedir+'/'
         x,y=[],[]
         for filename in os.listdir(filedir):
             name=filename[0:-4]
-            eta=round(float(name[4:7])*0.01,2)
-            w=round(float(name[10:])*0.1,2)
-            
+            #print(name[4:8])
+            eta=round(float(name[4:8])*0.001,3)
+            w=round(float(name[11:])*0.01,3)
             x.append(eta)
             y.append(read_csv(filedir+name))
         
