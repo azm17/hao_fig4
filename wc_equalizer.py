@@ -109,7 +109,7 @@ if __name__ == "__main__":
     count_w=0
     count_w_max=len(w_l)
     tmp_p1=-1
-    tmo_p4=-1
+    tmp_p4=-1
     for w in w_l:
         count_w+=1
         print(f'{round(count_w/count_w_max*100,1)}%')
