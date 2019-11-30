@@ -8,7 +8,7 @@ Find minimum discount factor of equalizer under observation errors numerically
 
 
 Please enter the following to execution this code.
-$ python3 wc_equalizer.py -eta 0.1 -p1 1000 -p3 1000 -w 1000 
+$ python3 wc_equalizer.py -eta 0.1 -p1 1000 -p4 1000 -w 1000 
 or
 $ python3 wc_equalizer.py
 
@@ -24,9 +24,9 @@ import numpy as np
 import csv
 
 # --parameter setting (default)--
-default_settings={'p1':1000,# step size of p1 ,0<=p1<=1
-                  'p4':1000,# step size of p4 ,0<=p4<=1
-                  'w':1000,# step size of discount factor w
+default_settings={'p1':100,# step size of p1 ,0<=p1<=1
+                  'p4':100,# step size of p4 ,0<=p4<=1
+                  'w':100,# step size of discount factor w
                   'eta':0.1}# error rate eta=epsilon+xi
 
 payoff={'T':1.5, 'R':1.0, 'P':0.0, 'S':-0.5}
@@ -108,6 +108,8 @@ if __name__ == "__main__":
     w_c=100# temporary value
     count_w=0
     count_w_max=len(w_l)
+    tmp_p1=-1
+    tmo_p4=-1
     for w in w_l:
         count_w+=1
         print(f'{round(count_w/count_w_max*100,1)}%')
