@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-w=100
-p1=100
-p4=100
+w=1000
+p1=1000
+p4=1000
 import numpy as np
 
 
