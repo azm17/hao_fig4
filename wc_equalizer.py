@@ -4,10 +4,9 @@ Created on Sat Apr  6 00:59:35 2019
 
 @author: Azumi Mamiya
 
-Find minimum discount factor of equalizer under observation errors numerically
+Numerically find minimum discount rate of equalizer under observation errors
 
-
-Please enter the following to execution this code.
+Please enter the following to execution this sentence.
 $ python3 wc_equalizer.py -eta 0.1 -p1 1000 -p4 1000 -w 1000 
 or
 $ python3 wc_equalizer.py
@@ -23,35 +22,35 @@ import numpy as np
 import csv
 
 # --parameter setting (default)--
-default_settings={'p1':1000,# step size of p1, 0 <= p1 <= 1
-                  'p4':1000,# step size of p4, 0 <= p4 <= 1
-                  'w':1000,# step size of discount factor w
-                  'eta':0}# error rate eta = epsilon+xi
+default_settings = {'p1':1000,# step size of p1, 0 <= p1 <= 1
+                    'p4':1000,# step size of p4, 0 <= p4 <= 1
+                    'w':1000,# step size of discount factor w
+                    'eta':0.0}# error rate eta = epsilon+xi
 
-payoff={'T':1.5, 'R':1.0, 'P':0.0, 'S':-0.5}
+payoff = {'T':1.5, 'R':1.0, 'P':0.0, 'S':-0.5}
 # --- ---
 
 def parse_args():
     parser = ArgumentParser()
     parser.add_argument('--p1', 
-                        metavar='p1_StepSize',
-                        type=float, 
-                        default=default_settings['p1'])
+                        metavar = 'p1_StepSize',
+                        type = float, 
+                        default = default_settings['p1'])
     
     parser.add_argument('--p4', 
-                        metavar='p4_StepSize',
-                        type=float, 
-                        default=default_settings['p4'])
+                        metavar = 'p4_StepSize',
+                        type = float, 
+                        default = default_settings['p4'])
     
     parser.add_argument('--w', 
-                        metavar='w_StepSize',
-                        type=float,
-                        default=default_settings['w'])
+                        metavar = 'w_StepSize',
+                        type = float,
+                        default = default_settings['w'])
     
     parser.add_argument('--eta', 
-                        metavar='error_rate_eta',
-                        type=float,
-                        default=default_settings['eta'])
+                        metavar = 'error_rate_eta',
+                        type = float,
+                        default = default_settings['eta'])
     
     return parser.parse_args()
 
@@ -107,5 +106,6 @@ if __name__ == "__main__":
                         w_c = w
                         tmp_p1 = p1
                         tmp_p4 = p4
+    
     print(f'eta:{args.eta}, w_c:{w_c}, p1:{tmp_p1}, p4:{tmp_p4}')
     write_csv([args.eta], [w_c], args)
