@@ -15,7 +15,7 @@ def my_plot(x,y,name):# generate the figure and setting of the figure
     
     plt.ylim(0,15)
     plt.xlim(0,0.3)
-    plt.xlabel('$\eta=\epsilon+\\xi$')
+    plt.xlabel('$\epsilon+\\xi$')
     plt.ylabel('$\chi$')
     plt.grid()
     plt.plot(x,y,'o')
@@ -26,20 +26,23 @@ def my_listplot(x_list,y_list,legend_list):
     plt.figure()
     plt.ylim(0,20)
     plt.xlim(0,0.3)
-    plt.xlabel('$\epsilon+\\xi$',fontsize=18)
-    plt.ylabel('$\chi_c$',fontsize=18)
+    plt.xlabel('$\epsilon+\\xi$', fontsize=18)
+    plt.ylabel('$\chi_c$', fontsize=18)
     plt.grid()
+    plt.rcParams["xtick.direction"] = "in"  
+    plt.rcParams["ytick.direction"] = "in"  
+    
     
     for x,y in zip(x_list,y_list):
         plt.plot(x,y,'-')
-    plt.legend(legend_list)
+    plt.legend(legend_list, title='$w$')
     #plt.show()
     #plt.savefig('../data/figure/chic.png')
     plt.savefig('./chic.pdf')
     
 def read_chicnoerrorcsv():
     data=[]
-    with open('./data/csv/figure_chi_c/chi_c_noerror.csv', 'r') as f:
+    with open('./data/chi_c/figure_chi_c/chi_c_noerror.csv', 'r') as f:
         reader = csv.reader(f)
         for row in reader:
             data.append(row)
@@ -64,7 +67,7 @@ def read_csv(filename):
 
 if __name__ == "__main__":
     #relative_path='./data/csv/marged_w/'
-    relative_path='./data/csv/figure_chi_c/'
+    relative_path='./data/chi_c/figure_chi_c/'
     dir_list=os.listdir(relative_path)
     dir_list.reverse()# reverse dir_list
     x_list,y_list,w_list=[],[],[]
