@@ -13,12 +13,12 @@ def my_plot(eta, w):# generate the figure and setting of the figure
     plt.xlim(0, 0.334)
     plt.xlabel('$\epsilon+\\xi$',
                fontsize = 18)
-    plt.ylabel('$w_c$',
+    plt.ylabel('$w$',
                fontsize = 18)
     plt.grid()
     plt.rcParams["xtick.direction"] = "in"  
     plt.rcParams["ytick.direction"] = "in"  
-    plt.plot(eta, w, 'o', 
+    plt.plot(eta, w, '-', 
              color = '#1f77b4', 
              markersize = 1)
     #plt.savefig('../data/figure/nondiscount_hao/{}.png'.format(n))
@@ -36,11 +36,15 @@ if __name__ == "__main__":
     relative_path = './data/w_c/1000/'
     dir_list = os.listdir(relative_path)
     w = 0
+    eta_list = []; w_list = []
     for file in dir_list:
         w_before = w
         eta, w = return_xy(relative_path, file)
         if eta == 0.213:
             break
         #print((w-w_before))
-        my_plot(eta, w)
+        eta_list.append(eta)
+        w_list.append(w)
+        
+    my_plot(eta_list, w_list)
     plt.savefig('./equalizer_wc.pdf')
