@@ -11,34 +11,34 @@ import matplotlib.pyplot as plt
 import csv
 import os
 
-def my_plot(x,y,name):# generate the figure and setting of the figure
+def my_plot(x, y, name):# generate the figure and setting of the figure
     
     plt.ylim(0,15)
     plt.xlim(0,0.3)
     plt.xlabel('$\eta=\epsilon+\\xi$')
-    plt.ylabel('$\chi$')
+    plt.ylabel('$\Delta$')
     plt.grid()
     plt.plot(x,y,'o')
     #plt.savefig('../data/figure/nondiscount_hao/chic.png')
     #plt.savefig('../data/figure/nondiscount_hao/{}.png'.format(n))
 
-def my_listplot(x_list,y_list,legend_list):
+def my_listplot(x_list, y_list, legend_list):
     plt.figure()
-    plt.ylim(0,20)
-    plt.xlim(0,0.3)
-    plt.xlabel('$\epsilon+\\xi$',fontsize=18)
-    plt.ylabel('$\chi_c$',fontsize=18)
+    plt.ylim(0, 1)
+    plt.xlim(0, 0.3)
+    plt.xlabel('$\epsilon+\\xi$', fontsize=18)
+    plt.ylabel('$\Delta$', fontsize=18)
     plt.grid()
     
-    for x,y in zip(x_list,y_list):
-        plt.plot(x,y,'-')
-    plt.legend(legend_list, title='$w$')
+    for x,y in zip(x_list, y_list):
+        plt.plot(x, y, '-')
+    plt.legend(legend_list, title = '$w$')
     #plt.show()
     #plt.savefig('../data/figure/chic.png')
     plt.savefig('./chic.pdf')
     
 def read_chicnoerrorcsv():
-    data=[]
+    data = []
     with open('./data/chi_c/figure_chi_c/chi_c_noerror.csv', 'r') as f:
         reader = csv.reader(f)
         for row in reader:
@@ -47,20 +47,21 @@ def read_chicnoerrorcsv():
     w = [float(i) for i in data[0]]
     
     
-    return dict(zip(w,chic))
+    return dict(zip(w, chic))
 
 def read_csv(filename):
-    data=[]
+    data = []
     with open(filename+'.csv', 'r') as f:
         reader = csv.reader(f)
         for row in reader:
             data.append(row)
-    x=[float(i) for i in data[0]]
+    x = [float(i) for i in data[0]]
+    y = [float(i) for i in data[1]]
     #y=[float(i) for i in data[1]]
-    if x==[]:
+    if x == []:
         pass
     else:
-        return min(x)
+        return y[x.index(min(x))]
 
 if __name__ == "__main__":
     #relative_path='./data/csv/marged_w/'
@@ -80,10 +81,10 @@ if __name__ == "__main__":
         filedir =relative_path+filedir+'/'
         x,y=[],[]
         for filename in os.listdir(filedir):
-            name=filename[0:-4]
+            name = filename[0:-4]
             #print(name[4:8])
-            eta=round(float(name[4:8])*0.001,3)
-            w=round(float(filedir[-3:-1])*0.1,1)
+            eta = round(float(name[4:8])*0.001,3)
+            w = round(float(filedir[-3:-1])*0.1,1)
             x.append(eta)
             y.append(read_csv(filedir+name))
         

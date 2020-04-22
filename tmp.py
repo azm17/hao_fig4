@@ -74,7 +74,7 @@ def main():
 if __name__ == "__main__":
     #relative_path='./data/csv/marged_w/'
     relative_path='./data/w_c/1000/'
-    dir_list=os.listdir(relative_path)
+    dir_list=os.listdir(relative_path)[:214]
     w=0
     for file in dir_list:
         w_before = w

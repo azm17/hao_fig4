@@ -30,11 +30,13 @@ def return_xy(path, filename):
 if __name__ == "__main__":
     #relative_path='./data/csv/marged_w/'
     relative_path='./data/w_c/1000/'
-    dir_list=os.listdir(relative_path)
+    dir_list=os.listdir(relative_path)[:214]
+    print(dir_list)
     w=0
     for file in dir_list:
         w_before = w
         eta,w = return_xy(relative_path, file)
         #print((w-w_before))
         my_plot(eta,w)
+    plt.grid()
     plt.savefig('./equalizer_wc.pdf')
