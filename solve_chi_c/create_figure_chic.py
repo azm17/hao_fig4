@@ -27,7 +27,7 @@ def my_listplot(x_list,y_list,legend_list):
     plt.ylim(0,20)
     plt.xlim(0,0.3)
     plt.xlabel('$\epsilon+\\xi$', fontsize=18)
-    plt.ylabel('$\chi$', fontsize=18)
+    plt.ylabel('$\chi_c$', fontsize=18)
     plt.grid()
     plt.rcParams["xtick.direction"] = "in"  
     plt.rcParams["ytick.direction"] = "in"  
@@ -35,7 +35,7 @@ def my_listplot(x_list,y_list,legend_list):
     
     for x,y in zip(x_list,y_list):
         plt.plot(x,y,'-')
-    plt.legend(legend_list, title='$w$')
+    plt.legend(legend_list, title='$\delta$')
     #plt.show()
     #plt.savefig('../data/figure/chic.png')
     plt.savefig('./chic.pdf')

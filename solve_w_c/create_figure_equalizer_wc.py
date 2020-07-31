@@ -13,7 +13,7 @@ def my_plot(eta, w):# generate the figure and setting of the figure
     plt.xlim(0, 0.334)
     plt.xlabel('$\epsilon+\\xi$',
                fontsize = 18)
-    plt.ylabel('$w$',
+    plt.ylabel('$\delta_c$',
                fontsize = 18)
     plt.grid()
     plt.rcParams["xtick.direction"] = "in"  
